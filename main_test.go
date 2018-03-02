@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	binary = filepath.Join(os.Getenv("GOPATH"), "bin/aws_audit_exporter.exe")
+	binary = filepath.Join(os.Getenv("GOPATH"), "bin/aws_spot_exporter.exe")
 )
 
 const (
@@ -22,16 +22,16 @@ const (
 
 func TestHandlingOfDuplicatedMetrics(t *testing.T) {
 	if _, err := os.Stat(binary); err != nil {
-		t.Skipf("aws_audit_exporter binary not available: %s", err)
+		t.Skipf("aws_spot_exporter binary not available: %s", err)
 	}
 
-	dir, err := ioutil.TempDir("", "aws_audit_exporter")
+	dir, err := ioutil.TempDir("", "aws_spot_exporter")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(dir)
 
-	exporter := exec.Command(binary, "--addr", address)
+	exporter := exec.Command(binary, "--web.listen-address", address)
 	test := func(_ int) error {
 		return queryExporter(address)
 	}
